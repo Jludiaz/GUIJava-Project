@@ -1,60 +1,111 @@
-import java.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 public class EnigmaFrame {
 
-    private JFrame frame = new JFrame();
-    private JTextField textField = new JTextField();//input three starting characters
-    private JTextArea textArea = new JTextArea();//provide in/out to the GUI for the encrypt/decrypt tasks
-    private JButton button = new JButton();//select encrypt vs decrypt
-    private JLabel label = new JLabel();//label all of the fields shown in example
-    private JPanel panel = new JPanel(); //visually appealing layout
+    private JFrame frame;
+    private JTextField textField;
 
-    public EnigmaFrame(){
+    private JTextArea inputArea;
+    private JTextArea outputArea;
 
-        createFrame();
+    private JButton decryptButton;
+    private JButton encryptButton;
 
-        createTextField();
+    private JComboBox<Integer> innerRotor;
+    private JComboBox<Integer> middleRotor;
+    private JComboBox<Integer> outterRotor;
 
+    public EnigmaFrame() {
 
-        createTextArea();
+        frame = new JFrame("Enigma Machine");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 200);
 
-        frame.add(textField, BorderLayout.NORTH);
-        frame.add(textArea, BorderLayout.CENTER);
+        // Main panel with BoxLayout
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 
-        frame.pack();
+        // Field Panel
+        JLabel fieldLabel = new JLabel("Initial Positions: ");
+        panel.add(fieldLabel);
+
+        textField = new JTextField(10);
+        textField.setMaximumSize(new Dimension(10,20));
+        panel.add(textField);
+        //  
+        // Button Panel
+        decryptButton = new JButton("Decrypt");
+        encryptButton = new JButton("Encrypt");
+
+        encryptButton.addActionListener(new ButtonActionListener("Encrypt"));
+        decryptButton.addActionListener(new ButtonActionListener("Decrypt"));
+
+        panel.add(encryptButton);
+        panel.add(decryptButton);
+        //
+
+        //JComboBox 
+        //rotor label
+        JLabel rotors = new JLabel("Rotors: ");
+        panel.add(rotors);
+
+        //inner rotor
+        JLabel innerLabel = new JLabel("Inner");
+        panel.add(innerLabel);
+    
+        innerRotor = new JComboBox<Integer>(new Integer[]{1,2,3,4,5});
+        panel.add(innerRotor);
+
+        //middle rotor
+        JLabel middleLabel = new JLabel("Middle");
+        panel.add(middleLabel);
+
+        middleRotor = new JComboBox<Integer>(new Integer[]{1,2,3,4,5});
+        panel.add(middleRotor);
+
+        //Outer Rotor
+        JLabel outerLabel = new JLabel("Outer");
+        panel.add(outerLabel);
+
+        outterRotor = new JComboBox<Integer>(new Integer[]{1,2,3,4,5});
+        panel.add(outterRotor);
+        //
+
+        //New JPanel Text Area
+        JPanel secondPanel = new JPanel();
+        secondPanel.setLayout(new GridLayout(2,1,5,5));
+
+        inputArea = new JTextArea();
+        outputArea = new JTextArea();
+
+        JScrollPane inputScrollPane = new JScrollPane(inputArea);
+        JScrollPane outputScrollPane = new JScrollPane(outputArea);
+
+        secondPanel.add(inputScrollPane);
+        secondPanel.add(outputScrollPane);
+
+        secondPanel.add(inputScrollPane);
+        secondPanel.add(outputScrollPane);
+
+        // Add main panel to the frame
+        frame.add(panel, BorderLayout.NORTH);
+        frame.add(secondPanel,BorderLayout.CENTER);
         frame.setVisible(true);
     }
 
-    public void createFrame(){
+    private class ButtonActionListener implements ActionListener {
+        private String action;
 
-        frame.setTitle("Enigma Machine");
-        frame.setSize(100, 600);
-        frame.setLocation(100, 100);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        public ButtonActionListener(String action) {
+            this.action = action;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JOptionPane.showMessageDialog(frame, action + " button clicked!");
+        }
     }
-
-    public void createTextField(){
-        textField.setPreferredSize(new Dimension(20, 60));
-        textField.setFont(new Font("Helvetica", Font.PLAIN,14));
-        textField.setBackground(Color.WHITE);
-        textField.setText("Initial Positions: ");
-    }
-
-    public void createTextArea(){
-        textArea.setPreferredSize(new Dimension(100,100));
-        textArea.setFont(new Font("Helvetica", Font.PLAIN,14));
-        textArea.setBackground(Color.WHITE);
-        textArea.setText("Text Area ");
-
-    }
-
-
-
-
-    
 }
