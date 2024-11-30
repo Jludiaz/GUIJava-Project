@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class EnigmaFrame {
+    private Enigma enigma;
 
     private JFrame frame;
     private JTextField textField;
@@ -19,10 +20,9 @@ public class EnigmaFrame {
     private JComboBox<Integer> outterRotor;
 
     public EnigmaFrame() {
-
         frame = new JFrame("Enigma Machine");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 200);
+        frame.setSize(800, 400);
 
         // Main panel with BoxLayout
         JPanel panel = new JPanel();
@@ -76,18 +76,20 @@ public class EnigmaFrame {
 
         //New JPanel Text Area
         JPanel secondPanel = new JPanel();
-        secondPanel.setLayout(new GridLayout(2,1,5,5));
+        secondPanel.setLayout(new GridLayout(4,0,2,2));
 
         inputArea = new JTextArea();
         outputArea = new JTextArea();
 
+        JLabel inputLabel = new JLabel("Input");
+        JLabel outputLabel = new JLabel("Output");
+
         JScrollPane inputScrollPane = new JScrollPane(inputArea);
         JScrollPane outputScrollPane = new JScrollPane(outputArea);
 
+        secondPanel.add(inputLabel);
         secondPanel.add(inputScrollPane);
-        secondPanel.add(outputScrollPane);
-
-        secondPanel.add(inputScrollPane);
+        secondPanel.add(outputLabel);
         secondPanel.add(outputScrollPane);
 
         // Add main panel to the frame
@@ -105,7 +107,24 @@ public class EnigmaFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            JOptionPane.showMessageDialog(frame, action + " button clicked!");
+            String initialPositions = textField.getText();
+
+            int innerInt = Integer.valueOf(innerRotor.getSelectedIndex());
+            int middleInt = Integer.valueOf(middleRotor.getSelectedIndex());
+            int outterInt = Integer.valueOf(outterRotor.getSelectedIndex());
+
+            Enigma enigma = new Enigma(innerInt + 1, middleInt + 1, outterInt + 1, initialPositions);
+
+            String outputText = new String();
+
+            if(action.equals("Encrypt")){
+                outputText = enigma.encrypt(inputArea.getText());
+            }else{
+                outputText = enigma.decrypt(inputArea.getText());
+            }
+
+            outputArea.setText(outputText);
+
         }
     }
 }
