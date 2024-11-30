@@ -36,6 +36,7 @@ public class EnigmaFrame {
         textField.setMaximumSize(new Dimension(10,20));
         panel.add(textField);
         //  
+
         // Button Panel
         decryptButton = new JButton("Decrypt");
         encryptButton = new JButton("Encrypt");
@@ -109,13 +110,13 @@ public class EnigmaFrame {
         public void actionPerformed(ActionEvent e) {
             String initialPositions = textField.getText();
 
-            int innerInt = Integer.valueOf(innerRotor.getSelectedIndex());
-            int middleInt = Integer.valueOf(middleRotor.getSelectedIndex());
-            int outterInt = Integer.valueOf(outterRotor.getSelectedIndex());
+            int innerInt = innerRotor.getSelectedIndex() + 1;
+            int middleInt = middleRotor.getSelectedIndex() + 1;
+            int outterInt = outterRotor.getSelectedIndex() + 1;
 
-            Enigma enigma = new Enigma(innerInt + 1, middleInt + 1, outterInt + 1, initialPositions);
+            Enigma enigma = new Enigma(innerInt, middleInt, outterInt, initialPositions);
 
-            String outputText = new String();
+            String outputText;
 
             if(action.equals("Encrypt")){
                 outputText = enigma.encrypt(inputArea.getText());
@@ -124,7 +125,6 @@ public class EnigmaFrame {
             }
 
             outputArea.setText(outputText);
-
         }
     }
 }
